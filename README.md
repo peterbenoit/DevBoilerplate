@@ -1,6 +1,6 @@
 # Project Automation Script
 
-Welcome! 🎉 This script is designed to streamline your project setup by automating everything from creating a new GitHub repository to initializing a project with your preferred JavaScript and CSS frameworks. Whether you're a fan of Angular, React, Vue, or Svelte, and prefer Tailwind, Bootstrap, or Bulma for styling, this script has you covered! With just a few commands, you'll have your new project up and running with all dependencies installed and the development server ready to go.
+Welcome! 🎉 This repo is designed to streamline your project setup by automating everything from creating a new GitHub repository to initializing a project with your preferred JavaScript and CSS frameworks. Whether you're a fan of Angular, React, Vue, or Svelte, and prefer Tailwind, Bootstrap, or Bulma for styling, this script has you covered! With just a few commands, you'll have your new project up and running with all dependencies installed and the development server ready to go.
 
 ## Features
 
