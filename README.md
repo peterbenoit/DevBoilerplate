@@ -72,7 +72,12 @@ During execution, you'll be prompted to select:
 
 ### 5. Development Server
 
-After installation, the development server will automatically start. You can access it by navigating to http://localhost:<PORT> in your browser (the port depends on the framework).
+After installation, the development server will automatically start based on your selected framework. Access your application at the appropriate localhost port:
+
+- **Angular:** http://localhost:4200 (started with ng serve)
+- **React:** http://localhost:3000 (started with npm start)
+- **Vue:** http://localhost:5173 (started with npm run dev)
+- **Svelte:** http://localhost:5173 (started with npm run dev)
 
 ## Why Deno instead of Node?
 
