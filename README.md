@@ -33,7 +33,7 @@ To get started, clone this repository locally:
 
 ```bash
 git clone https://github.com/peterbenoit/DevBoilerplate.git
-cd DenoInstaller
+cd DevBoilerplate
 ```
 
 ### 2. Set Up the GitHub Token
