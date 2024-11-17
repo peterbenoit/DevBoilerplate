@@ -1,5 +1,13 @@
 #!/bin/bash
 
+echo "This script will install Deno and npm (along with Node.js) if they are not already installed."
+read -p "Do you want to proceed? (y/n): " choice
+
+if [[ "$choice" != "y" ]]; then
+    echo "Installation aborted by the user."
+    exit 0
+fi
+
 # Check if Deno is installed
 if ! command -v deno &> /dev/null; then
     echo "Deno is not installed. Installing Deno..."
