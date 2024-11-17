@@ -63,6 +63,7 @@ if (!githubToken) {
 }
 
 const setupRemoteRepo = prompt('Do you want to set up a remote repository? (y/n) [y]:') || 'y';
+let repoDir: string;
 
 if (setupRemoteRepo.toLowerCase() === 'y') {
     const response = await fetch(apiUrl, {
@@ -95,7 +96,7 @@ if (setupRemoteRepo.toLowerCase() === 'y') {
     console.log(`Repository cloned successfully into '${normalizedRepoName}'!`);
 
     // Set the working directory for project setup
-    const repoDir = normalizedRepoName;
+    repoDir = normalizedRepoName;
 } else {
     // Create local directory instead
     try {
@@ -107,7 +108,7 @@ if (setupRemoteRepo.toLowerCase() === 'y') {
     }
 
     // Set the working directory for project setup
-    const repoDir = normalizedRepoName;
+    repoDir = normalizedRepoName;
 }
 
 const framework = (
@@ -132,62 +133,17 @@ const frameworkCommands: { [key: string]: (repoName: string) => string[] } = {
     ],
     react: () => ['npx', 'create-react-app', '.'],
     vue: () => ['npm', 'create', 'vite@latest', '.', '--', '--template', 'vue'],
-    svelte: () => ['npx', 'create-vite', '.', '--template', 'svelte'],
 };
 
-// Initialize project with selected framework
-console.log(`Initializing ${framework} project...`);
-try {
-    const frameworkCmd = frameworkCommands[framework](normalizedRepoName);
-    let command, args;
-
-    // Handle different framework commands appropriately
-    switch (framework) {
-        case 'vue':
-            command = frameworkCmd[0];
-            args = frameworkCmd.slice(1);
-            break;
-        default:
-            command = frameworkCmd[0];
-            args = frameworkCmd.slice(1);
-    }
-
-    console.log(`Executing: ${command} ${args.join(' ')}`);
-
-    // Run the command to initialize the project
-    const result = await new Deno.Command(command, {
-        args: args,
-        cwd: repoDir,
-        stderr: 'piped',
-        stdout: 'piped',
-        env: {
-            PATH: Deno.env.get('PATH'),
-            HOME: Deno.env.get('HOME'),
-            NODE_ENV: 'production',
-            NPM_CONFIG_LOGLEVEL: 'error',
-        },
-    }).output();
-
-    const output = new TextDecoder().decode(result.stdout);
-    if (!result.success) {
-        const errorOutput = new TextDecoder().decode(result.stderr);
-        throw new Error(`Command failed with error:\n${errorOutput}`);
-    }
-    console.log(output);
-
-    // Additional Vue-specific setup
-    if (framework === 'vue') {
-        // Install Vue Router and Vuex
-        console.log('Installing additional Vue dependencies...');
-        await new Deno.Command('npm', {
-            args: ['install', 'vue-router@next', 'vuex@next'],
-            cwd: repoDir,
-        }).output();
-    }
-} catch (error) {
-    console.error(`Error initializing ${framework} project:`, error);
+// Execute the framework initialization command
+const initCommand = frameworkCommands[framework](repoDir);
+const initProcess = Deno.run({ cmd: initCommand, cwd: repoDir });
+const initStatus = await initProcess.status();
+if (!initStatus.success) {
+    console.error(`Error initializing ${framework} project.`);
     Deno.exit(1);
 }
+console.log(`${framework} project initialized successfully in '${repoDir}'!`);
 
 // Install project dependencies
 console.log('Installing project dependencies...');
